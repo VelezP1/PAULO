@@ -1,620 +1,926 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Paulo Velez</title>
+  <title>Jose Paulo Velez Ortiz — Portafolio</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230a0a0a'/><path d='M28 22h24c14 0 23 8.5 23 20.5S66 63 52 63H42v22H28V22zm14 13v15h9.5c5.8 0 9.5-3.2 9.5-7.5s-3.7-7.5-9.5-7.5H42z' fill='%23ffffff'/><circle cx='76' cy='76' r='8.5' fill='%23c1121f'/></svg>">
+  <meta name="description" content="Jose Paulo Velez Ortiz — Founder EBRAVO MTN · ITC Tec de Monterrey · UX Aalto University.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --black: #0a0a0a;
-      --paper: #e8e6e1;
-      --maguey: #c45c3e;
-      --ice: #a8c4c4;
-      --mono: 'IBM Plex Mono', monospace;
-      --sans: 'Inter', sans-serif;
-      --serif: 'Playfair Display', Georgia, serif;
-      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --bg:          #fafaf9;
+      --bg-2:        #f4f4f2;
+      --surface:     #ffffff;
+      --text:        #0a0a0a;
+      --text-2:      #404040;
+      --text-3:      #737373;
+      --text-4:      #a3a3a3;
+      --accent:      #c1121f;
+      --accent-2:    #e5383b;
+      --border:      rgba(0,0,0,0.08);
+      --border-2:    rgba(0,0,0,0.15);
+      --shadow:      0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
+      --shadow-lg:   0 4px 6px rgba(0,0,0,0.02), 0 20px 40px rgba(0,0,0,0.08);
+      --ease:        cubic-bezier(0.16, 1, 0.3, 1);
+      --sans:        'Inter', sans-serif;
+      --serif:       'Playfair Display', Georgia, serif;
+      --mono:        'IBM Plex Mono', monospace;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html {
-      scroll-behavior: smooth;
-      background: var(--black);
-    }
-
+    html { scroll-behavior: smooth; background: var(--bg); }
     body {
       font-family: var(--sans);
       font-size: 16px;
-      letter-spacing: 0.01em;
-      line-height: 1.55;
-      color: var(--paper);
-      background: var(--black);
-      overflow-x: hidden;
+      line-height: 1.65;
+      color: var(--text);
+      background: var(--bg);
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
     }
+    ::selection { background: var(--accent); color: #fff; }
 
-    ::selection { background: var(--maguey); color: var(--black); }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
 
-    .display { font-family: var(--serif); letter-spacing: -0.035em; line-height: 0.95; font-weight: 600; }
-    .meta { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(232,230,225,0.5); }
+    /* Utilities */
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .section { padding: 7rem 0; }
+    .section-alt { background: var(--bg-2); }
 
-    /* Reveals */
-    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+    /* Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+    }
     .reveal.in-view { opacity: 1; transform: translateY(0); }
 
-    /* Nav */
+    /* NAV */
     .nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.5rem 2rem;
-      mix-blend-mode: difference;
+      position: fixed; inset: 0 0 auto 0; z-index: 1000;
+      background: rgba(250,250,249,0.82);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
     }
-    .nav__mark { font-family: var(--serif); font-size: 1.3rem; letter-spacing: -0.04em; font-weight: 600; color: var(--paper); text-decoration: none; }
-    .nav__right { display: flex; align-items: center; gap: 1.5rem; }
-    .nav__link { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--paper); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.3s ease; }
-    .nav__link:hover { border-color: var(--maguey); }
+    .nav__inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 72px;
+    }
+    .nav__brand {
+      font-family: var(--mono); font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--text);
+    }
+    .nav__menu { display: flex; align-items: center; gap: 2.25rem; }
+    .nav__link {
+      font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase;
+      letter-spacing: 0.14em; color: var(--text-3); position: relative;
+      transition: color 0.25s ease;
+    }
+    .nav__link::after {
+      content: ''; position: absolute; left: 0; bottom: -4px;
+      width: 0; height: 1px; background: var(--accent);
+      transition: width 0.3s var(--ease);
+    }
+    .nav__link:hover { color: var(--text); }
+    .nav__link:hover::after { width: 100%; }
+    .nav__toggle {
+      display: none; background: none; border: none; cursor: pointer;
+      color: var(--text); padding: 0.25rem;
+    }
+    .nav__toggle svg { width: 24px; height: 24px; }
 
     /* HERO */
     .hero {
-      position: relative;
       min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      background: var(--black);
-      padding: 6rem 2rem 4rem;
+      display: grid; grid-template-columns: 1.05fr 0.95fr;
+      align-items: center; gap: 4rem;
+      padding: 8rem 0 5rem;
     }
-
-    .hero__visual {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 2rem;
+    .hero__eyebrow {
+      display: inline-flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 1.75rem;
     }
-
-    .hero__avatar {
-      width: clamp(220px, 28vw, 360px);
-      aspect-ratio: 1/1;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 1px solid rgba(232,230,225,0.12);
-      box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+    .hero__eyebrow-line { width: 28px; height: 1px; background: var(--accent); }
+    .hero__eyebrow-text {
+      font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase;
+      letter-spacing: 0.18em; color: var(--accent); font-weight: 600;
     }
-
-    .hero__content {
-      padding: 2rem 4rem 2rem 2rem;
-      max-width: 640px;
+    .hero__title {
+      font-family: var(--serif); font-size: clamp(3rem, 6.5vw, 6rem);
+      line-height: 0.95; letter-spacing: -0.04em; font-weight: 600;
+      margin-bottom: 1.75rem;
     }
-
-    .hero__kicker { margin-bottom: 1.25rem; }
-
-    .hero__headline {
-      font-family: var(--serif);
-      font-size: clamp(3.2rem, 7vw, 7rem);
-      letter-spacing: -0.04em;
-      line-height: 0.9;
-      font-weight: 600;
-      margin-bottom: 1.5rem;
+    .hero__title em { font-style: italic; font-weight: 400; color: var(--accent); }
+    .hero__desc {
+      font-size: 1.1rem; line-height: 1.7; color: var(--text-2);
+      max-width: 460px; margin-bottom: 2.75rem;
     }
-
+    .hero__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase;
+      letter-spacing: 0.12em; font-weight: 600;
+      padding: 1rem 1.75rem; border-radius: 999px;
+      border: 1px solid var(--border-2); background: transparent;
+      color: var(--text); cursor: pointer;
+      transition: all 0.3s var(--ease);
+    }
+    .btn:hover { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .btn--accent { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn--accent:hover { background: var(--accent-2); border-color: var(--accent-2); }
+    .hero__visual { position: relative; }
+    .hero__img {
+      width: 100%; aspect-ratio: 4/3; object-fit: cover; object-position: center 20%;
+      border-radius: 1.25rem; box-shadow: var(--shadow-lg);
+    }
     .hero__caption {
-      max-width: 460px;
-      font-size: 1.05rem;
-      line-height: 1.65;
-      color: rgba(232,230,225,0.7);
-      margin-bottom: 2rem;
+      position: absolute; left: -1.5rem; bottom: 2rem;
+      font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase;
+      letter-spacing: 0.14em; color: var(--text-4);
+      writing-mode: vertical-rl; transform: rotate(180deg);
     }
 
-    .hero__actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
+    /* METRICS */
+    .metrics { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .metrics__grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+    .metric {
+      padding: 3rem 1.5rem; text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .metric:last-child { border-right: none; }
+    .metric__value {
+      font-family: var(--serif); font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 600; letter-spacing: -0.03em; margin-bottom: 0.5rem;
+    }
+    .metric__value span { color: var(--accent); }
+    .metric__label {
+      font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase;
+      letter-spacing: 0.14em; color: var(--text-3);
     }
 
-    .hero__btn {
-      font-family: var(--mono);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--paper);
-      text-decoration: none;
-      padding: 0.85rem 1.35rem;
-      border: 1px solid rgba(232,230,225,0.25);
-      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    /* SECTION HEADERS */
+    .sec-head { margin-bottom: 4rem; }
+    .sec-head__eyebrow {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 1rem;
     }
-    .hero__btn:hover { background: var(--paper); color: var(--black); border-color: var(--paper); }
+    .sec-head__num {
+      font-family: var(--mono); font-size: 0.7rem; color: var(--accent); font-weight: 600;
+    }
+    .sec-head__rule { width: 40px; height: 1px; background: var(--border-2); }
+    .sec-head__label {
+      font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase;
+      letter-spacing: 0.16em; color: var(--text-3);
+    }
+    .sec-head__title {
+      font-family: var(--serif); font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+      line-height: 1; letter-spacing: -0.04em; font-weight: 600;
+      max-width: 700px;
+    }
 
-    .hero__line {
-      margin-top: 2.5rem;
-      height: 2px;
-      width: 100%;
-      max-width: 320px;
-      background: linear-gradient(90deg, var(--maguey), var(--ice));
+    /* CARDS (Education / Experience) */
+    .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 1rem; overflow: hidden;
+      transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
     }
-
-    /* IMPACT STRIP */
-    .impact {
-      padding: 5rem 2rem;
-      background: var(--black);
-      border-top: 1px solid rgba(232,230,225,0.08);
-      border-bottom: 1px solid rgba(232,230,225,0.08);
+    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .card__visual {
+      height: 220px; background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      padding: 2rem; position: relative; border-bottom: 1px solid var(--border);
     }
-    .impact__grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2rem;
-      max-width: 1100px;
-      margin: 0 auto;
+    .card__visual--dark { background: #111; }
+    .card__visual.card__visual--logo {
+      padding: 1rem;
+      height: clamp(200px, 22vw, 260px);
     }
-    .impact__item { text-align: center; }
-    .impact__label { display: block; margin-bottom: 0.75rem; }
-    .impact__value {
-      font-family: var(--serif);
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
-      letter-spacing: -0.03em;
-      line-height: 1.1;
+    .card__visual.card__visual--logo img {
+      width: 100%; height: 100%;
+      max-height: none; max-width: none;
+      object-fit: contain;
+    }
+    .card__visual img { max-height: 90px; max-width: 70%; object-fit: contain; }
+    .card__visual--photo img { width: 100%; height: 100%; object-fit: cover; max-height: none; max-width: none; }
+    .card__badge {
+      position: absolute; bottom: 1rem; left: 1rem;
+      font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase;
+      letter-spacing: 0.12em; padding: 0.35rem 0.75rem;
+      background: var(--bg); color: var(--text-2); border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+    .card__body { padding: 1.75rem; }
+    .card__seq {
+      font-family: var(--mono); font-size: 0.65rem; color: var(--accent);
+      letter-spacing: 0.12em; font-weight: 600; margin-bottom: 0.75rem;
+    }
+    .card__title {
+      font-family: var(--serif); font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+      line-height: 1.1; letter-spacing: -0.03em; font-weight: 600;
       margin-bottom: 0.5rem;
-      color: var(--paper);
     }
-    .impact__desc {
-      font-size: 0.85rem;
-      line-height: 1.5;
-      color: rgba(232,230,225,0.55);
+    .card__meta {
+      font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--text-3); margin-bottom: 1rem;
     }
+    .card__desc {
+      font-size: 0.95rem; line-height: 1.65; color: var(--text-2); margin-bottom: 1.25rem;
+    }
+    .card__footer {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .card__tag {
+      font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--text-2);
+      padding: 0.35rem 0.7rem; background: var(--bg); border-radius: 999px;
+    }
+    .card__tag--accent { color: var(--accent); background: rgba(193,18,31,0.06); }
 
-    /* TIMELINE */
-    .timeline {
-      padding: 8rem 2rem;
-      background: var(--black);
-    }
-    .timeline__header { margin: 0 0 4rem 6vw; }
-    .timeline__title { font-family: var(--serif); font-size: clamp(2.5rem, 6vw, 5rem); letter-spacing: -0.03em; }
-
-    .timeline__list {
+    /* EDUCATION LIST */
+    .edu-list {
       display: flex;
       flex-direction: column;
-      gap: 0;
-      max-width: 1200px;
+      gap: 3.5rem;
+      max-width: 900px;
       margin: 0 auto;
     }
-    .timeline__item {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      border-top: 1px solid rgba(232,230,225,0.1);
-      padding: 2.5rem 0;
-      transition: background 0.3s ease;
-    }
-    .timeline__item:hover { background: rgba(255,255,255,0.02); }
-    .timeline__item:last-child { border-bottom: 1px solid rgba(232,230,225,0.1); }
-    .timeline__item:nth-child(even) .timeline__visual { order: 2; }
-    .timeline__item:nth-child(even) .timeline__text { order: 1; padding-left: 0; padding-right: 3rem; text-align: right; }
-
-    .timeline__visual {
-      position: relative;
-      overflow: hidden;
-      aspect-ratio: 16/10;
-      background: var(--paper);
+    .edu-item {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
+      align-items: flex-start;
+      gap: 2.5rem;
     }
-    .timeline__visual img {
-      max-width: 100%;
-      max-height: 100%;
+    .edu-logo {
+      width: 140px;
+      height: 140px;
       object-fit: contain;
-      transition: transform 0.6s var(--ease);
+      flex-shrink: 0;
     }
-    .timeline__item:hover .timeline__visual img { transform: scale(1.06); }
-
-    .timeline__text { padding-left: 3rem; }
-    .timeline__coords { display: block; margin-bottom: 0.75rem; }
-    .timeline__city { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.2rem); letter-spacing: -0.03em; line-height: 1; margin-bottom: 0.75rem; }
-    .timeline__body { max-width: 360px; font-size: 0.92rem; line-height: 1.55; color: rgba(232,230,225,0.65); }
-    .timeline__item:nth-child(even) .timeline__body { margin-left: auto; }
-
-    /* LOGO WALL */
-    .logos {
-      padding: 6rem 2rem;
-      background: var(--paper);
-      color: var(--black);
+    .edu-info { flex: 1; }
+    .edu-badge {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-3);
+      margin-bottom: 0.5rem;
+      display: block;
     }
-    .logos__title { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -0.03em; text-align: center; margin-bottom: 3rem; color: var(--black); }
-    .logos__grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 2rem;
-      max-width: 1000px;
-      margin: 0 auto;
-      align-items: center;
-      justify-items: center;
+    .edu-title {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 2.5vw, 2.1rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
     }
-    .logo-card {
-      width: 100%;
-      max-width: 180px;
-      aspect-ratio: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(10,10,10,0.1);
-      padding: 1.5rem;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      background: rgba(255,255,255,0.4);
+    .edu-meta {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-3);
+      margin-bottom: 0.75rem;
     }
-    .logo-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
-    .logo-card img { max-width: 100%; max-height: 80px; object-fit: contain; }
-
-    /* PROJECTS */
-    .projects {
-      padding: 8rem 0;
-      background: var(--black);
-      overflow: hidden;
+    .edu-desc {
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--text-2);
+      margin-bottom: 1rem;
     }
-    .projects__header { padding: 0 2rem 3rem 6vw; }
-    .projects__title { font-family: var(--serif); font-size: clamp(2.5rem, 6vw, 5rem); letter-spacing: -0.03em; }
-    .projects__track {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
-      padding: 1rem 6vw 3rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .project-card {
-      width: 100%;
-      aspect-ratio: 16/10;
-      position: relative;
-      text-decoration: none;
-      color: inherit;
-      overflow: hidden;
-    }
-    .project-card__inner {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      transform-style: preserve-3d;
-      transition: transform 0.2s ease-out;
-    }
-    .project-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.6s var(--ease);
-    }
-    .project-card:hover img { transform: scale(1.05); }
-    .project-card__overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 40%, rgba(10,10,10,0.85) 100%);
-    }
-    .project-card__scan {
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(10,10,10,0.25) 2px, rgba(10,10,10,0.25) 5px);
-      opacity: 0.25;
-      pointer-events: none;
-    }
-    .project-card__info {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 1.5rem;
-      z-index: 2;
-    }
-    .project-card__name { font-family: var(--serif); font-size: 2rem; letter-spacing: -0.03em; line-height: 1; }
-    .project-card__subtitle { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ice); margin-top: 0.4rem; }
-
-    /* SKILLS */
-    .skills {
-      padding: 8rem 2rem;
-      background: var(--black);
-    }
-    .skills__grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .skills__block { padding: 2rem; border: 1px solid rgba(232,230,225,0.1); }
-    .skills__title { font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.4rem); letter-spacing: -0.03em; margin-bottom: 1.5rem; }
-    .skills__list {
+    .edu-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.6rem;
-      list-style: none;
+      gap: 0.5rem;
     }
-    .skills__list li {
+    .edu-tag {
       font-family: var(--mono);
-      font-size: 11px;
+      font-size: 0.6rem;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      padding: 0.5rem 1rem;
-      border: 1px solid rgba(232,230,225,0.2);
-      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      letter-spacing: 0.1em;
+      color: var(--text-2);
+      padding: 0.35rem 0.7rem;
+      background: var(--bg);
+      border-radius: 999px;
     }
-    .skills__list li:hover { background: var(--paper); color: var(--black); border-color: var(--paper); }
+    .edu-tag--accent { color: var(--accent); background: rgba(193,18,31,0.06); }
 
-    .contact p { font-size: 0.95rem; line-height: 2; color: rgba(232,230,225,0.7); }
-    .contact a { color: var(--paper); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.3s ease; }
-    .contact a:hover { border-color: var(--maguey); }
+    @media (max-width: 768px) {
+      .edu-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 1.25rem;
+      }
+      .edu-logo { width: 110px; height: 110px; }
+      .edu-tags { justify-content: center; }
+    }
+
+    /* HACKATHONS */
+    .hack-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .hack-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 1rem; padding: 3rem; position: relative; overflow: hidden;
+      transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+    }
+    .hack-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .hack-card__num {
+      position: absolute; right: 1.5rem; bottom: -0.5rem;
+      font-family: var(--serif); font-size: 7rem; font-weight: 600;
+      color: rgba(0,0,0,0.04); line-height: 1; pointer-events: none;
+    }
+    .hack-card__badge {
+      display: inline-block; font-family: var(--mono); font-size: 0.6rem;
+      text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600;
+      padding: 0.4rem 0.85rem; border: 1px solid var(--border-2);
+      border-radius: 999px; color: var(--accent); margin-bottom: 1.5rem;
+    }
+    .hack-card__title {
+      font-family: var(--serif); font-size: clamp(1.75rem, 3vw, 2.5rem);
+      line-height: 1.05; letter-spacing: -0.03em; font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .hack-card__text { font-size: 1rem; line-height: 1.65; color: var(--text-2); max-width: 36ch; }
+
+    /* PROJECTS */
+    .filters { display: flex; gap: 0.5rem; margin-bottom: 3rem; flex-wrap: wrap; }
+    .filter-btn {
+      font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase;
+      letter-spacing: 0.12em; font-weight: 600;
+      padding: 0.7rem 1.25rem; border-radius: 999px;
+      border: 1px solid var(--border-2); background: transparent;
+      color: var(--text-3); cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .filter-btn:hover { color: var(--text); border-color: var(--text-2); }
+    .filter-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .proj-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .proj-card {
+      display: block; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 1rem; overflow: hidden;
+      transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+    }
+    .proj-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .proj-card__img {
+      width: 100%; aspect-ratio: 16/10; object-fit: cover;
+      transition: transform 0.6s var(--ease);
+    }
+    .proj-card__img--contain { object-fit: contain; padding: 2.5rem; background: #fff; }
+    .proj-card:hover .proj-card__img { transform: scale(1.03); }
+    .proj-card__body {
+      padding: 1.5rem; display: flex; justify-content: space-between; align-items: flex-end;
+      border-top: 1px solid var(--border);
+    }
+    .proj-card__title {
+      font-family: var(--serif); font-size: clamp(1.35rem, 2vw, 1.7rem);
+      line-height: 1.1; letter-spacing: -0.02em; font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+    .proj-card__sub {
+      font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--text-3);
+    }
+    .proj-card__sub span { color: var(--accent); }
+    .proj-card__arrow {
+      font-size: 1.25rem; color: var(--text-4);
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+    .proj-card:hover .proj-card__arrow { transform: translate(3px, -3px); color: var(--accent); }
+    .proj-card.hidden { display: none; }
+
+    /* DARK PROJECTS SECTION */
+    .section--dark {
+      background: #0a0a0a;
+      color: #f5f5f5;
+    }
+    .section--dark .sec-head__title { color: #f5f5f5; }
+    .section--dark .sec-head__label { color: #a3a3a3; }
+    .section--dark .sec-head__rule { background: rgba(255,255,255,0.2); }
+    .section--dark .filter-btn {
+      border-color: rgba(255,255,255,0.25);
+      color: #a3a3a3;
+    }
+    .section--dark .filter-btn:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
+    .section--dark .filter-btn.active { background: #fff; color: #0a0a0a; border-color: #fff; }
+    .section--dark .proj-card {
+      background: #141414;
+      border-color: rgba(255,255,255,0.08);
+    }
+    .section--dark .proj-card:hover { box-shadow: 0 4px 6px rgba(255,255,255,0.03), 0 20px 40px rgba(255,255,255,0.06); }
+    .section--dark .proj-card__body { border-color: rgba(255,255,255,0.08); }
+    .section--dark .proj-card__title { color: #f5f5f5; }
+    .section--dark .proj-card__sub { color: #a3a3a3; }
+    .section--dark .proj-card__sub span { color: #e5383b; }
+    .section--dark .proj-card__arrow { color: #737373; }
+    .section--dark .proj-card:hover .proj-card__arrow { color: #e5383b; }
+    .section--dark .proj-card__img--contain { background: #0f0f0f; }
+    .section--dark .skill-block {
+      background: #141414;
+      border-color: rgba(255,255,255,0.08);
+    }
+    .section--dark .skill-block__title {
+      color: #f5f5f5;
+      border-color: rgba(255,255,255,0.08);
+    }
+    .section--dark .skill-pill {
+      background: #0f0f0f;
+      border-color: rgba(255,255,255,0.08);
+      color: #d4d4d4;
+    }
+
+    /* SKILLS */
+    .skills-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+    .skill-block { background: var(--surface); border: 1px solid var(--border); border-radius: 1rem; padding: 2rem; }
+    .skill-block__title {
+      font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase;
+      letter-spacing: 0.14em; color: var(--text); font-weight: 600;
+      margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);
+    }
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .skill-pill {
+      font-family: var(--sans); font-size: 0.85rem; color: var(--text-2);
+      padding: 0.45rem 0.85rem; background: var(--bg); border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+
+    /* CONTACT */
+    .contact { background: var(--bg-2); padding: 7rem 0; }
+    .contact__inner { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 5rem; align-items: center; }
+    .contact__label {
+      font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase;
+      letter-spacing: 0.16em; color: var(--text-3); margin-bottom: 1rem; display: block;
+    }
+    .contact__title {
+      font-family: var(--serif); font-size: clamp(2.5rem, 5vw, 4.5rem);
+      line-height: 1; letter-spacing: -0.04em; font-weight: 600;
+    }
+    .contact__title em { color: var(--accent); font-style: italic; font-weight: 400; }
+    .contact__links { display: flex; flex-direction: column; gap: 0.75rem; }
+    .contact__btn {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.35rem 1.5rem; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 0.75rem;
+      font-family: var(--mono); font-size: 0.75rem; text-transform: uppercase;
+      letter-spacing: 0.1em; font-weight: 600; color: var(--text);
+      cursor: pointer; transition: all 0.25s ease;
+    }
+    .contact__btn--email { text-transform: none; letter-spacing: 0.02em; }
+    .contact__btn:hover { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .contact__btn span:last-child { color: var(--accent); font-size: 0.65rem; }
+    .contact__btn:hover span:last-child { color: var(--bg); }
 
     /* FOOTER */
     .footer {
-      padding: 5rem 2rem 7rem;
-      background: var(--black);
-      display: flex;
-      justify-content: center;
+      padding: 2.5rem 0; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--text-3);
     }
-    .colophon {
-      width: 45%;
-      min-width: 280px;
-      text-align: center;
-      font-family: var(--mono);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      line-height: 2;
-      color: rgba(232,230,225,0.5);
-    }
-    .colophon__mark { font-family: var(--serif); font-size: 1.6rem; letter-spacing: -0.04em; color: var(--paper); display: block; margin-bottom: 1.5rem; }
-    .colophon__links { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; }
-    .colophon__links a { color: var(--paper); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.3s ease; }
-    .colophon__links a:hover { border-color: var(--maguey); }
+    .footer__links { display: flex; gap: 1.75rem; }
+    .footer__links a { transition: color 0.2s ease; }
+    .footer__links a:hover { color: var(--accent); }
 
-    @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; text-align: center; padding-top: 7rem; }
-      .hero__content { padding: 1rem 0 0; margin: 0 auto; }
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .hero { grid-template-columns: 1fr; gap: 3rem; padding-top: 7rem; }
+      .hero__content { text-align: center; }
+      .hero__eyebrow { justify-content: center; }
+      .hero__desc { margin-left: auto; margin-right: auto; }
       .hero__actions { justify-content: center; }
-      .hero__line { margin: 2rem auto 0; }
-      .impact__grid { grid-template-columns: repeat(2, 1fr); }
-      .timeline__item,
-      .timeline__item:nth-child(even) { grid-template-columns: 1fr; }
-      .timeline__item:nth-child(even) .timeline__visual,
-      .timeline__item:nth-child(even) .timeline__text { order: 0; padding: 0; text-align: left; }
-      .timeline__text { padding: 1.5rem 0 0; }
-      .timeline__item:nth-child(even) .timeline__body { margin-left: 0; }
-      .skills__grid { grid-template-columns: 1fr; }
-      .projects__track { grid-template-columns: 1fr; }
-      .colophon { width: 80%; }
+      .hero__caption { display: none; }
+      .metrics__grid { grid-template-columns: repeat(2, 1fr); }
+      .metric:nth-child(2n) { border-right: none; }
+      .metric:nth-child(n+3) { border-top: 1px solid var(--border); }
+      .contact__inner { grid-template-columns: 1fr; gap: 3rem; }
     }
-
-    @media (max-width: 600px) {
-      .nav { padding: 1.25rem 1.25rem; }
-      .hero__content,
-      .projects__header,
-      .timeline__header { margin-left: 0; padding-left: 1.5rem; }
-      .impact__grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    @media (max-width: 768px) {
+      .nav__menu {
+        display: none; position: fixed; top: 72px; left: 0; right: 0;
+        background: rgba(250,250,249,0.98); backdrop-filter: blur(16px);
+        flex-direction: column; align-items: flex-start;
+        padding: 2rem; gap: 1.25rem; border-bottom: 1px solid var(--border);
+      }
+      .nav__menu.active { display: flex; }
+      .nav__toggle { display: block; }
+      .section { padding: 4.5rem 0; }
+      .card-grid, .hack-grid, .proj-grid, .skills-grid { grid-template-columns: 1fr; }
+      .contact { padding: 4.5rem 0; }
+      .footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+    @media (max-width: 480px) {
+      .container { padding: 0 1.25rem; }
+      .hero__title { font-size: clamp(2.5rem, 12vw, 3.5rem); }
+      .metric { padding: 2rem 1rem; }
+      .hack-card { padding: 2rem; }
     }
   </style>
 </head>
 <body>
+
   <nav class="nav">
-    <a href="#" class="nav__mark">Paulo Velez</a>
-    <div class="nav__right">
-      <a class="nav__link" href="#projects">Projects</a>
-      <a class="nav__link" href="#skills">Contact</a>
+    <div class="container nav__inner">
+      <a href="#" class="nav__brand">Jose Paulo Velez Ortiz</a>
+      <button class="nav__toggle" id="navToggle" aria-label="Abrir navegación">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+      <div class="nav__menu" id="navMenu">
+        <a class="nav__link" href="#education">Educación</a>
+        <a class="nav__link" href="#experience">Experiencia</a>
+        <a class="nav__link" href="#hackathons">Hackatones</a>
+        <a class="nav__link" href="#projects">Proyectos</a>
+        <a class="nav__link" href="#skills">Habilidades</a>
+        <a class="nav__link" href="#contact">Contacto</a>
+      </div>
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero" id="hero">
+  <header class="hero container" id="hero">
+    <div class="hero__content reveal">
+      <div class="hero__eyebrow">
+        <span class="hero__eyebrow-line"></span>
+        <span class="hero__eyebrow-text">Founder @ EBRAVO MTN · Pres. SATI Tec</span>
+      </div>
+      <h1 class="hero__title">
+        Jose Paulo<br>
+        <em>Velez Ortiz</em>
+      </h1>
+      <p class="hero__desc">
+        Ingeniería en Tecnologías Computacionales · Tec de Monterrey · Especialista UX Aalto University · Founder EBRAVO MTN.
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--accent" href="mailto:paulo_velez@outlook.com">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="m2 7 8.5 5.5a3 3 0 0 0 3 0L22 7"/></svg>
+          Enviar correo
+        </a>
+        <a class="btn" href="https://www.linkedin.com/in/paulo-velez-aba132416" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
     <div class="hero__visual reveal">
-      <img class="hero__avatar" src="images/Profile.jpg" alt="Paulo Velez">
+      <img class="hero__img" src="images/Profile.jpg" alt="Jose Paulo Velez Ortiz">
+      <span class="hero__caption">Aalto University · Helsinki</span>
     </div>
-    <div class="hero__content">
-      <div class="hero__kicker meta">Paulo Velez</div>
-      <h1 class="hero__headline display">I build products, systems, and companies.</h1>
-      <p class="hero__caption reveal">
-        Engineering student focused on turning ideas into working products. Founder of EVRABO MTN. Winner at Ecohack Bono. Finalist at Start Hack México. Studied UX at Aalto, entrepreneurship at IE, and design at CalArts.
-      </p>
-      <div class="hero__actions reveal">
-        <a class="hero__btn" href="mailto:paulo_velez@outlook.com">Email me</a>
-        <a class="hero__btn" href="https://www.linkedin.com/in/paulo-velez-aba132416" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="hero__btn" href="#projects">See projects</a>
-      </div>
-      <div class="hero__line reveal"></div>
-    </div>
-  </section>
+  </header>
 
-  <!-- IMPACT STRIP -->
-  <section class="impact" aria-label="Impact">
-    <div class="impact__grid reveal">
-      <div class="impact__item">
-        <span class="impact__label meta">Company</span>
-        <div class="impact__value display">EVRABO MTN</div>
-        <p class="impact__desc">Founder of a downhill-focused brand in Mexico.</p>
+  <section class="metrics" aria-label="Logros principales">
+    <div class="metrics__grid reveal">
+      <div class="metric">
+        <div class="metric__value">EBRAVO <span>MTN</span></div>
+        <div class="metric__label">Founder &amp; Lead Product</div>
       </div>
-      <div class="impact__item">
-        <span class="impact__label meta">Hackathon</span>
-        <div class="impact__value display">Ecohack Bono</div>
-        <p class="impact__desc">Winner with a carbon-footprint AI solution.</p>
+      <div class="metric">
+        <div class="metric__value">BONO <span>AI</span></div>
+        <div class="metric__label">1er Lugar Ecohack</div>
       </div>
-      <div class="impact__item">
-        <span class="impact__label meta">Competition</span>
-        <div class="impact__value display">Start Hack</div>
-        <p class="impact__desc">Finalist solving drought challenges in Mexico.</p>
+      <div class="metric">
+        <div class="metric__value">SATI <span>TEC</span></div>
+        <div class="metric__label">Presidente Estudiantil</div>
       </div>
-      <div class="impact__item">
-        <span class="impact__label meta">Education</span>
-        <div class="impact__value display">5 Programs</div>
-        <p class="impact__desc">Aalto · IE · CalArts · Colorado · Tec de Monterrey</p>
+      <div class="metric">
+        <div class="metric__value">GLOBAL <span>UX</span></div>
+        <div class="metric__label">Tec · Aalto · IE · CalArts</div>
       </div>
     </div>
   </section>
 
-  <!-- TIMELINE -->
-  <section class="timeline" id="timeline">
-    <header class="timeline__header reveal">
-      <span class="meta">Trajectory</span>
-      <h2 class="timeline__title display">Field Notes</h2>
-    </header>
-    <div class="timeline__list">
-      <article class="timeline__item reveal">
-        <div class="timeline__visual">
-          <img src="images/Aalto%20university.png" alt="Aalto University">
+  <section class="section section-alt" id="education">
+    <div class="container">
+      <div class="sec-head reveal">
+        <div class="sec-head__eyebrow">
+          <span class="sec-head__num">01</span>
+          <span class="sec-head__rule"></span>
+          <span class="sec-head__label">Formación Académica Internacional</span>
         </div>
-        <div class="timeline__text">
-          <span class="timeline__coords meta">Helsinki</span>
-          <h3 class="timeline__city display">Aalto</h3>
-          <p class="timeline__body">Human-centered UX. Learned to design with restraint, validate with users, and treat silence and friction as design material.</p>
-        </div>
-      </article>
-      <article class="timeline__item reveal">
-        <div class="timeline__visual">
-          <img src="images/IE_University_logo.svg" alt="IE University">
-        </div>
-        <div class="timeline__text">
-          <span class="timeline__coords meta">Madrid</span>
-          <h3 class="timeline__city display">IE University</h3>
-          <p class="timeline__body">Entrepreneurship bootcamp. Focused on systems that scale: revenue models, unit economics, and moving from idea to executable plan.</p>
-        </div>
-      </article>
-      <article class="timeline__item reveal">
-        <div class="timeline__visual">
-          <img src="images/Estudios.png" alt="Tecnológico de Monterrey">
-        </div>
-        <div class="timeline__text">
-          <span class="timeline__coords meta label">Current</span>
-          <h3 class="timeline__city display">Tecnológico de Monterrey</h3>
-          <p class="timeline__body">Ingeniería en Tecnologías Computacionales. The lab where code, design, and business meet into shipped products.</p>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- LOGO WALL -->
-  <section class="logos" id="education">
-    <h2 class="logos__title reveal">Education</h2>
-    <div class="logos__grid reveal">
-      <div class="logo-card"><img src="images/Estudios.png" alt="Tecnológico de Monterrey"></div>
-      <div class="logo-card"><img src="images/Aalto%20university.png" alt="Aalto University"></div>
-      <div class="logo-card"><img src="images/IE_University_logo.svg" alt="IE University"></div>
-      <div class="logo-card"><img src="images/CalArts.png" alt="CalArts"></div>
-      <div class="logo-card"><img src="images/Universidad%20de%20Colorado.webp" alt="University of Colorado"></div>
-    </div>
-  </section>
-
-  <!-- PROJECTS -->
-  <section class="projects" id="projects">
-    <header class="projects__header reveal">
-      <span class="meta">Selected Work</span>
-      <h2 class="projects__title display">Projects</h2>
-    </header>
-    <div class="projects__track">
-      <a class="project-card" href="https://paulovel.github.io/XECOR/" target="_blank" rel="noopener">
-        <div class="project-card__inner">
-          <img src="images/EVRABO.jpg" alt="EVRABO MTN">
-          <div class="project-card__overlay"></div>
-          <div class="project-card__scan"></div>
-          <div class="project-card__info">
-            <h3 class="project-card__name">EVRABO</h3>
-            <p class="project-card__subtitle">Downhill Mexico · Founder</p>
+        <h2 class="sec-head__title">Educación &amp; Trayectoria</h2>
+      </div>
+      <div class="edu-list">
+        <div class="edu-item reveal">
+          <img class="edu-logo" src="images/Estudios.png" alt="Tecnológico de Monterrey">
+          <div class="edu-info">
+            <span class="edu-badge">Santa Fe, México · Vigente</span>
+            <h3 class="edu-title">Tecnológico de Monterrey</h3>
+            <div class="edu-meta">Ing. Tecnologías Computacionales · 08/2024 – Actual</div>
+            <p class="edu-desc">Ciencia de datos, arquitectura de software e ingeniería de sistemas. Presidente de la Asociación Estudiantil SATI.</p>
+            <div class="edu-tags">
+              <span class="edu-tag edu-tag--accent">Promedio: 86.45 / 100</span>
+            </div>
           </div>
         </div>
-      </a>
-      <article class="project-card">
-        <div class="project-card__inner">
-          <img src="images/experiencia%20Laborar.png" alt="Ecohack Bono">
-          <div class="project-card__overlay"></div>
-          <div class="project-card__scan"></div>
-          <div class="project-card__info">
-            <h3 class="project-card__name">Ecohack Bono</h3>
-            <p class="project-card__subtitle">Carbon footprint AI · Winner</p>
+        <div class="edu-item reveal">
+          <img class="edu-logo" src="images/Aalto university.png" alt="Aalto University">
+          <div class="edu-info">
+            <span class="edu-badge">Helsinki, Finlandia · 07/2026</span>
+            <h3 class="edu-title">Aalto University</h3>
+            <div class="edu-meta">Human-Centered UX Design</div>
+            <p class="edu-desc">Investigación de usuarios, arquitectura de información y prototipado interactivo con estándares nórdicos.</p>
+            <div class="edu-tags">
+              <span class="edu-tag">Helsinki</span>
+              <span class="edu-tag edu-tag--accent">UX Design</span>
+            </div>
           </div>
         </div>
-      </article>
-      <article class="project-card">
-        <div class="project-card__inner">
-          <img src="images/starthack.png" alt="Start Hack México">
-          <div class="project-card__overlay"></div>
-          <div class="project-card__scan"></div>
-          <div class="project-card__info">
-            <h3 class="project-card__name">Start Hack</h3>
-            <p class="project-card__subtitle">Drought in Mexico · Finalist</p>
+        <div class="edu-item reveal">
+          <img class="edu-logo" src="images/IE_University_logo.svg" alt="IE University">
+          <div class="edu-info">
+            <span class="edu-badge">Madrid, España · 07/2026</span>
+            <h3 class="edu-title">IE University</h3>
+            <div class="edu-meta">Entrepreneurship Bootcamp</div>
+            <p class="edu-desc">Validación de modelos de negocio, estrategia de mercado y aceleración de startups tecnológicas.</p>
+            <div class="edu-tags">
+              <span class="edu-tag">Madrid</span>
+              <span class="edu-tag edu-tag--accent">Entrepreneurship</span>
+            </div>
           </div>
         </div>
-      </article>
-      <a class="project-card" href="https://leonardou-lab.github.io/WEB-DOWNHILL_03/index.html" target="_blank" rel="noopener">
-        <div class="project-card__inner">
-          <img src="images/DOWNMX.jpg" alt="Downhill Mexico Web Page">
-          <div class="project-card__overlay"></div>
-          <div class="project-card__scan"></div>
-          <div class="project-card__info">
-            <h3 class="project-card__name">Downhill MX</h3>
-            <p class="project-card__subtitle">Web Page · View site</p>
+        <div class="edu-item reveal">
+          <img class="edu-logo" src="images/CalArts.png" alt="CalArts">
+          <div class="edu-info">
+            <span class="edu-badge">Online · 08/2026</span>
+            <h3 class="edu-title">CalArts (Coursera)</h3>
+            <div class="edu-meta">Graphic Design Specialization</div>
+            <p class="edu-desc">Comunicación visual, teoría tipográfica e identidad de marca.</p>
+            <div class="edu-tags">
+              <span class="edu-tag">CalArts</span>
+              <span class="edu-tag edu-tag--accent">Graphic Design</span>
+            </div>
           </div>
         </div>
-      </a>
-    </div>
-  </section>
-
-  <!-- SKILLS & CONTACT -->
-  <section class="skills" id="skills">
-    <div class="skills__grid">
-      <div class="skills__block reveal">
-        <span class="meta">Technical</span>
-        <h2 class="skills__title display">Skills</h2>
-        <ul class="skills__list">
-          <li>C++</li>
-          <li>C# Unity</li>
-          <li>Java</li>
-          <li>Python</li>
-          <li>Matlab</li>
-          <li>UX Design</li>
-          <li>Graphic Design</li>
-          <li>Entrepreneurship</li>
-        </ul>
-      </div>
-      <div class="skills__block reveal contact">
-        <span class="meta">Contacto</span>
-        <h2 class="skills__title display">Reach Out</h2>
-        <p>
-          <a href="tel:+522215292879">+52 221 529 2879</a><br>
-          <a href="mailto:paulo_velez@outlook.com">paulo_velez@outlook.com</a><br>
-          Puebla, México
-        </p>
-        <p style="margin-top:1.5rem;">Español · English</p>
+        <div class="edu-item reveal">
+          <img class="edu-logo" src="images/Universidad de Colorado.webp" alt="University of Colorado">
+          <div class="edu-info">
+            <span class="edu-badge">Online · 10/2024</span>
+            <h3 class="edu-title">University of Colorado</h3>
+            <div class="edu-meta">Introducción C# en Unity</div>
+            <p class="edu-desc">Programación orientada a objetos en C# y lógica interactiva con Unity Engine.</p>
+            <div class="edu-tags">
+              <span class="edu-tag">Colorado</span>
+              <span class="edu-tag edu-tag--accent">C# Unity</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer class="footer" id="colophon">
-    <div class="colophon reveal">
-      <span class="colophon__mark">Paulo Velez</span>
-      <p>
-        Designed and built by Paulo Velez in Puebla, México.<br>
-        Last updated: Agosto 2026
-      </p>
-      <div class="colophon__links">
-        <a href="https://www.instagram.com/paulo_velez_/" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://www.tiktok.com/@paulo_velez_?lang=en" target="_blank" rel="noopener">TikTok</a>
-        <a href="https://www.linkedin.com/in/paulo-velez-aba132416" target="_blank" rel="noopener">LinkedIn</a>
+  <section class="section" id="experience">
+    <div class="container">
+      <div class="sec-head reveal">
+        <div class="sec-head__eyebrow">
+          <span class="sec-head__num">02</span>
+          <span class="sec-head__rule"></span>
+          <span class="sec-head__label">Liderazgo &amp; Desarrollo</span>
+        </div>
+        <h2 class="sec-head__title">Experiencia Laboral</h2>
       </div>
+      <div class="card-grid">
+        <article class="card reveal">
+          <div class="card__visual card__visual--photo">
+            <img src="images/EVRABO.jpg" alt="EBRAVO MTN">
+            <span class="card__badge">06/2026 – Presente</span>
+          </div>
+          <div class="card__body">
+            <span class="card__seq">01 / FOUNDER</span>
+            <h3 class="card__title">EBRAVO MTN</h3>
+            <div class="card__meta">Founder &amp; Lead Product Developer</div>
+            <p class="card__desc">Fundación y desarrollo de plataformas digitales: Downhill Mexico Webpage y Conciliador Fiscal.</p>
+            <div class="card__footer">
+              <span class="card__tag">Founder</span>
+              <span class="card__tag">Downhill MX</span>
+              <span class="card__tag card__tag--accent">Conciliador Fiscal</span>
+            </div>
+          </div>
+        </article>
+        <article class="card reveal">
+          <div class="card__visual card__visual--logo">
+            <img src="images/experiencia Laborar.png" alt="Bono Internship UI AI">
+            <span class="card__badge">06/2025 – 08/2025</span>
+          </div>
+          <div class="card__body">
+            <span class="card__seq">02 / INTERNSHIP</span>
+            <h3 class="card__title">Bono</h3>
+            <div class="card__meta">Interno UI/UX &amp; AI Product Design</div>
+            <p class="card__desc">Diseño de la interfaz IA para cálculo de huella de carbono corporativa. Obtenida tras ganar 1er Lugar Ecohack.</p>
+            <div class="card__footer">
+              <span class="card__tag">Ecohack Winner</span>
+              <span class="card__tag">AI Carbon App</span>
+              <span class="card__tag card__tag--accent">UX/UI</span>
+            </div>
+          </div>
+        </article>
+        <article class="card reveal">
+          <div class="card__visual card__visual--logo">
+            <img src="images/Estudios.png" alt="SATI Tec de Monterrey">
+            <span class="card__badge">Actualmente</span>
+          </div>
+          <div class="card__body">
+            <span class="card__seq">03 / LIDERAZGO</span>
+            <h3 class="card__title">SATI — Tec de Monterrey</h3>
+            <div class="card__meta">Presidente de la Asociación Estudiantil (ITC)</div>
+            <p class="card__desc">Liderazgo de la Mesa Directiva de Ingeniería Computacional y coordinación de iniciativas técnicas.</p>
+            <div class="card__footer">
+              <span class="card__tag">Presidente SATI</span>
+              <span class="card__tag card__tag--accent">Tec de Monterrey</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="hackathons">
+    <div class="container">
+      <div class="sec-head reveal">
+        <div class="sec-head__eyebrow">
+          <span class="sec-head__num">03</span>
+          <span class="sec-head__rule"></span>
+          <span class="sec-head__label">Competiciones de Innovación</span>
+        </div>
+        <h2 class="sec-head__title">Hackatones &amp; Premios</h2>
+      </div>
+      <div class="hack-grid">
+        <div class="hack-card reveal">
+          <span class="hack-card__num">01</span>
+          <span class="hack-card__badge">1er Lugar · Proyecto Ganador</span>
+          <h3 class="hack-card__title">Ecohack Bono</h3>
+          <p class="hack-card__text">Sistema inteligente con IA para estimación de huella de carbono corporativa.</p>
+        </div>
+        <div class="hack-card reveal">
+          <span class="hack-card__num">02</span>
+          <span class="hack-card__badge">Equipo Finalista</span>
+          <h3 class="hack-card__title">Start Hack Mexico</h3>
+          <p class="hack-card__text">Startup tecnológica para predicción y prevención de sequías en México.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--dark" id="projects">
+    <div class="container">
+      <div class="sec-head reveal">
+        <div class="sec-head__eyebrow">
+          <span class="sec-head__num">04</span>
+          <span class="sec-head__rule"></span>
+          <span class="sec-head__label">Desarrollos Seleccionados</span>
+        </div>
+        <h2 class="sec-head__title">Proyectos Destacados</h2>
+      </div>
+      <div class="filters reveal">
+        <button class="filter-btn active" onclick="filterProjects('all')">Todos</button>
+        <button class="filter-btn" onclick="filterProjects('founder')">Founder &amp; Startup</button>
+        <button class="filter-btn" onclick="filterProjects('ai')">IA &amp; Hackatones</button>
+      </div>
+      <div class="proj-grid">
+        <a class="proj-card reveal" data-cat="founder" href="https://paulovel.github.io/XECOR/" target="_blank" rel="noopener">
+          <img class="proj-card__img" src="images/EVRABO.jpg" alt="EBRAVO MTN">
+          <div class="proj-card__body">
+            <div>
+              <h3 class="proj-card__title">EBRAVO MTN</h3>
+              <div class="proj-card__sub">Downhill Mexico · <span>Founder</span></div>
+            </div>
+            <span class="proj-card__arrow">↗</span>
+          </div>
+        </a>
+        <article class="proj-card reveal" data-cat="ai">
+          <img class="proj-card__img proj-card__img--contain" src="images/experiencia Laborar.png" alt="Ecohack Bono App">
+          <div class="proj-card__body">
+            <div>
+              <h3 class="proj-card__title">Ecohack Bono App</h3>
+              <div class="proj-card__sub">Carbon Footprint AI · <span>1er Lugar</span></div>
+            </div>
+            <span class="proj-card__arrow">↗</span>
+          </div>
+        </article>
+        <a class="proj-card reveal" data-cat="founder" href="https://leonardou-lab.github.io/WEB-DOWNHILL_03/index.html" target="_blank" rel="noopener">
+          <img class="proj-card__img" src="images/DOWNMX.jpg" alt="Downhill MX Web">
+          <div class="proj-card__body">
+            <div>
+              <h3 class="proj-card__title">Downhill MX Web</h3>
+              <div class="proj-card__sub">Web Platform · <span>Live Site</span></div>
+            </div>
+            <span class="proj-card__arrow">↗</span>
+          </div>
+        </a>
+        <article class="proj-card reveal" data-cat="ai">
+          <img class="proj-card__img proj-card__img--contain" src="images/starthack.png" alt="Start Hack Startup">
+          <div class="proj-card__body">
+            <div>
+              <h3 class="proj-card__title">Start Hack Startup</h3>
+              <div class="proj-card__sub">Mitigación de Sequías · <span>Finalista</span></div>
+            </div>
+            <span class="proj-card__arrow">↗</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt section--dark" id="skills">
+    <div class="container">
+      <div class="sec-head reveal">
+        <div class="sec-head__eyebrow">
+          <span class="sec-head__num">05</span>
+          <span class="sec-head__rule"></span>
+          <span class="sec-head__label">Capacidades &amp; Stack</span>
+        </div>
+        <h2 class="sec-head__title">Habilidades</h2>
+      </div>
+      <div class="skills-grid reveal">
+        <div class="skill-block">
+          <div class="skill-block__title">Programación</div>
+          <div class="skill-pills">
+            <span class="skill-pill">C++</span>
+            <span class="skill-pill">C# (Unity)</span>
+            <span class="skill-pill">Java</span>
+            <span class="skill-pill">Python</span>
+            <span class="skill-pill">Matlab</span>
+          </div>
+        </div>
+        <div class="skill-block">
+          <div class="skill-block__title">Desarrollo</div>
+          <div class="skill-pills">
+            <span class="skill-pill">Unity Engine</span>
+            <span class="skill-pill">Desarrollo Web</span>
+            <span class="skill-pill">IA Integration</span>
+            <span class="skill-pill">Conciliador Fiscal</span>
+          </div>
+        </div>
+        <div class="skill-block">
+          <div class="skill-block__title">Diseño &amp; Business</div>
+          <div class="skill-pills">
+            <span class="skill-pill">Human-Centered UX</span>
+            <span class="skill-pill">Graphic Design</span>
+            <span class="skill-pill">Entrepreneurship</span>
+            <span class="skill-pill">Liderazgo SATI</span>
+          </div>
+        </div>
+        <div class="skill-block">
+          <div class="skill-block__title">Idiomas</div>
+          <div class="skill-pills">
+            <span class="skill-pill">Español (Nativo)</span>
+            <span class="skill-pill">Inglés (Fluido)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="container contact__inner">
+      <div class="reveal">
+        <span class="contact__label">Contacto Directo</span>
+        <h2 class="contact__title">¿Hablamos de un <em>nuevo proyecto</em>?</h2>
+      </div>
+      <div class="reveal">
+        <span class="contact__label">— Disponible ahora</span>
+        <div class="contact__links">
+          <a class="contact__btn contact__btn--email" href="mailto:paulo_velez@outlook.com">
+            <span>paulo_velez@outlook.com</span>
+            <span>Enviar</span>
+          </a>
+          <a class="contact__btn" href="tel:+522215292879">
+            <span>+52 221 529 2879</span>
+            <span>Llamar</span>
+          </a>
+          <a class="contact__btn" href="https://www.linkedin.com/in/paulo-velez-aba132416" target="_blank" rel="noopener">
+            <span>LinkedIn Profile</span>
+            <span>Ver ↗</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer container">
+    <div>Jose Paulo Velez Ortiz · Puebla, México</div>
+    <div class="footer__links">
+      <a href="https://www.linkedin.com/in/paulo-velez-aba132416" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://www.instagram.com/paulo_velez_/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.tiktok.com/@paulo_velez_?lang=en" target="_blank" rel="noopener">TikTok</a>
     </div>
   </footer>
 
   <script>
-    /* ─── INTERSECTION OBSERVER ─── */
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('in-view');
+    function filterProjects(category) {
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      document.querySelectorAll('.proj-card').forEach(card => {
+        card.classList.toggle('hidden', category !== 'all' && card.getAttribute('data-cat') !== category);
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+    }
+
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    navToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
+    document.querySelectorAll('.nav__link').forEach(l => l.addEventListener('click', () => navMenu.classList.remove('active')));
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('in-view'); });
+    }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   </script>
 </body>
