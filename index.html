@@ -40,7 +40,7 @@
       background: var(--bg);
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      overflow-x: hidden;
+      overflow-x: clip;
     }
     ::selection { background: var(--accent); color: #fff; }
 
@@ -519,9 +519,149 @@
       .metric { padding: 2rem 1rem; }
       .hack-card { padding: 2rem; }
     }
+
+    /* ============ SCROLLTELLING ENGINE ============ */
+    .progress {
+      position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 1100;
+      background: var(--accent); transform-origin: 0 50%; transform: scaleX(0);
+      pointer-events: none;
+    }
+    .nav { transition: transform 0.5s var(--ease); }
+    .nav.nav--hidden { transform: translateY(-100%); }
+    .nav__link.active { color: var(--text); }
+    .nav__link.active::after { width: 100%; }
+
+    /* split text */
+    .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0.06em 0.1em 0.18em; margin: -0.06em -0.1em -0.18em; }
+    .wi, .ch { display: inline-block; will-change: transform; }
+    .wi { transform-origin: 0 100%; }
+
+    /* reveal driven by JS */
+    .js-motion .reveal { opacity: 0; transform: none; transition: none; will-change: transform, opacity; }
+
+    /* hero pin */
+    .js-motion .hero-track { height: 190vh; position: relative; }
+    .js-motion .hero { position: sticky; top: 0; height: 100vh; min-height: 0; }
+    .js-motion .hero__content, .js-motion .hero__visual { will-change: transform, opacity; }
+    .js-motion .hero__title .ch { transform: translateY(115%); animation: chUp 1.1s var(--ease) forwards; animation-delay: calc(var(--i) * 38ms + 250ms); }
+    .js-motion .hero-anim { opacity: 0; animation: fadeUp 1.1s var(--ease) forwards; animation-delay: var(--dl, 0s); }
+    .js-motion .hero__img { animation: imgIn 1.6s var(--ease) 0.2s both; }
+    .hero__scroll {
+      display: none; position: absolute; left: 50%; bottom: 1.75rem; transform: translateX(-50%);
+      font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-3);
+      flex-direction: column; align-items: center; gap: 0.6rem;
+    }
+    .hero__scroll i { width: 1px; height: 42px; background: var(--border-2); position: relative; overflow: hidden; }
+    .hero__scroll i::after { content: ''; position: absolute; inset: 0; background: var(--accent); animation: scrollCue 1.8s var(--ease) infinite; }
+    .js-motion .hero__scroll { display: flex; }
+    @keyframes chUp { to { transform: translateY(0); } }
+    @keyframes fadeUp { from { opacity: 0; translate: 0 28px; } to { opacity: 1; translate: 0 0; } }
+    @keyframes imgIn { from { clip-path: inset(100% 0 0 0 round 1.25rem); } to { clip-path: inset(0 0 0 0 round 1.25rem); } }
+    @keyframes scrollCue { 0% { transform: translateY(-100%); } 60%, 100% { transform: translateY(100%); } }
+
+
+    /* education pinned story */
+    .edu-rail, .edu-ghost { display: none; }
+    .js-motion .edu-stage {
+      position: sticky; top: 0; height: 100vh; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; padding: 72px 0 0;
+    }
+    .js-motion .edu-list { position: relative; display: block; width: 100%; max-width: 980px; height: min(460px, 62vh); margin: 0; }
+    .js-motion .edu-item {
+      position: absolute; inset: 0; align-items: center; gap: 4rem;
+      opacity: 0; visibility: hidden; will-change: transform, opacity, filter;
+    }
+    .js-motion .edu-logo { width: 230px; height: 230px; will-change: transform; }
+    .js-motion .edu-info { will-change: transform; }
+    .js-motion .edu-title { font-size: clamp(2rem, 4.4vw, 3.6rem); }
+    .js-motion .edu-desc { font-size: 1.1rem; max-width: 48ch; }
+    .js-motion .edu-rail {
+      display: flex; position: absolute; left: 0; right: 0; top: 96px; align-items: center; gap: 1.5rem;
+      font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.16em; color: var(--text-3);
+    }
+    .edu-rail b { color: var(--accent); font-weight: 600; }
+    .edu-rail__bar { flex: 1; height: 1px; background: var(--border-2); position: relative; }
+    .edu-rail__bar i { position: absolute; inset: 0; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); }
+    .js-motion .edu-ghost {
+      display: block; position: absolute; right: -1rem; bottom: -4vw; pointer-events: none;
+      font-family: var(--serif); font-weight: 600; font-size: 30vw; line-height: 1; letter-spacing: -0.06em;
+      color: rgba(0,0,0,0.045);
+    }
+
+    /* experience: stacking deck */
+    .js-motion .card-grid.xp-stack { display: block; max-width: 920px; margin: 0 auto; padding-bottom: 6vh; }
+    .js-motion .xp-card {
+      position: sticky; top: calc(96px + var(--k) * 22px);
+      display: grid; grid-template-columns: 0.9fr 1.1fr;
+      margin-bottom: 14vh; transform-origin: 50% 0; will-change: transform;
+      box-shadow: var(--shadow-lg);
+    }
+    .js-motion .xp-card:last-child { margin-bottom: 0; }
+    .js-motion .xp-card .card__visual { height: 100%; min-height: 360px; border-bottom: 0; border-right: 1px solid var(--border); }
+    .js-motion .xp-card .card__visual.card__visual--logo { height: 100%; }
+    .js-motion .xp-card .card__body { padding: 2.75rem; display: flex; flex-direction: column; justify-content: center; }
+    .js-motion .xp-card .card__title { font-size: clamp(1.8rem, 3vw, 2.5rem); }
+
+    /* projects: pinned horizontal gallery */
+    .js-motion .proj-track { width: 100vw; margin-left: calc(50% - 50vw); position: relative; margin-top: 2.5rem; }
+    .js-motion .proj-stage {
+      position: sticky; top: 0; height: 100vh; overflow: hidden;
+      display: flex; flex-direction: column; justify-content: center; padding-top: 72px;
+    }
+    .proj-rail { display: none; }
+    .js-motion .proj-rail {
+      display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.75rem;
+      padding: 0 max(2rem, calc((100vw - 1200px) / 2 + 2rem));
+      font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.16em; color: #a3a3a3;
+    }
+    .proj-rail b { color: var(--accent-2); font-weight: 600; }
+    .proj-rail__bar { flex: 1; height: 1px; background: rgba(255,255,255,0.2); position: relative; }
+    .proj-rail__bar i { position: absolute; inset: 0; background: var(--accent-2); transform-origin: 0 50%; transform: scaleX(0); }
+    .js-motion .proj-grid {
+      display: flex; gap: 2rem; width: max-content; position: relative;
+      padding: 0 max(2rem, calc((100vw - 1200px) / 2 + 2rem)); will-change: transform;
+    }
+    .js-motion .proj-card { width: min(64vw, 760px, calc((100vh - 270px) * 1.55)); flex-shrink: 0; will-change: transform, opacity; }
+    .js-motion .proj-card, .js-motion .xp-card { transition: box-shadow 0.35s var(--ease); isolation: isolate; }
+    .js-motion .proj-card__img { transition: none; position: relative; z-index: 1; }
+    /* caption always above the (scaled) image so text is never covered */
+    .js-motion .proj-card__body { position: relative; z-index: 3; background: #141414; }
+    .js-motion .proj-card:hover { box-shadow: 0 30px 60px rgba(229,56,59,0.12); }
+    .js-motion .proj-rail, .js-motion .proj-grid { position: relative; z-index: 2; }
+    .proj-ghost { display: none; }
+    .js-motion .proj-ghost {
+      display: block; position: absolute; left: 0; top: 50%; z-index: 0; pointer-events: none; white-space: nowrap;
+      font-family: var(--serif); font-weight: 600; font-size: 26vw; line-height: 1; letter-spacing: -0.05em;
+      color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,0.09); will-change: transform;
+    }
+    .js-motion .xp-card .card__visual { overflow: hidden; }
+    [data-curtain] { will-change: clip-path; }
+    .js-motion .proj-card__title { font-size: clamp(1.5rem, 2.6vw, 2.2rem); }
+
+    @media (max-width: 768px) {
+      .js-motion .xp-card { grid-template-columns: 1fr; }
+      .js-motion .xp-card .card__visual, .js-motion .xp-card .card__visual.card__visual--logo { min-height: 0; height: 170px; border-right: 0; border-bottom: 1px solid var(--border); }
+      .js-motion .xp-card .card__body { padding: 1.5rem; }
+      .js-motion .proj-card { width: 82vw; }
+    }
+    @media (max-width: 1024px), (max-height: 700px) {
+      .js-motion .hero-track { height: auto; }
+      .js-motion .hero { position: relative; height: auto; min-height: 100vh; }
+      .js-motion .hero__scroll { display: none; }
+    }
+    @media (max-width: 768px) {
+      .js-motion .edu-list { height: min(560px, 72vh); }
+      .js-motion .edu-item { flex-direction: column; justify-content: center; gap: 1.25rem; }
+      .js-motion .edu-logo { width: 130px; height: 130px; }
+      .js-motion .edu-desc { font-size: 0.95rem; }
+      .js-motion .edu-rail { top: 88px; }
+      .js-motion .edu-ghost { font-size: 55vw; }
+    }
   </style>
 </head>
 <body>
+
+  <div class="progress" id="progress"></div>
 
   <nav class="nav">
     <div class="container nav__inner">
@@ -540,20 +680,21 @@
     </div>
   </nav>
 
+  <div class="hero-track" id="heroTrack">
   <header class="hero container" id="hero">
-    <div class="hero__content reveal">
-      <div class="hero__eyebrow">
+    <div class="hero__content" id="heroContent">
+      <div class="hero__eyebrow hero-anim" style="--dl:.1s">
         <span class="hero__eyebrow-line"></span>
         <span class="hero__eyebrow-text">Founder @ EVRABO · Pres. SATI Tec</span>
       </div>
-      <h1 class="hero__title">
+      <h1 class="hero__title" id="heroTitle">
         Jose Paulo<br>
         <em>Velez Ortiz</em>
       </h1>
-      <p class="hero__desc">
+      <p class="hero__desc hero-anim" style="--dl:.9s">
         Ingeniería en Tecnologías Computacionales · Tec de Monterrey · Especialista UX Aalto University · Founder EVRABO.
       </p>
-      <div class="hero__actions">
+      <div class="hero__actions hero-anim" style="--dl:1.05s">
         <a class="btn btn--accent" href="mailto:paulo_velez@outlook.com">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="m2 7 8.5 5.5a3 3 0 0 0 3 0L22 7"/></svg>
           Enviar correo
@@ -561,36 +702,39 @@
         <a class="btn" href="https://www.linkedin.com/in/paulo-velez-aba132416" target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </div>
-    <div class="hero__visual reveal">
+    <div class="hero__visual" id="heroVisual">
       <img class="hero__img" src="images/Profile.jpg" alt="Jose Paulo Velez Ortiz">
       <span class="hero__caption">Aalto University · Helsinki</span>
     </div>
+    <div class="hero__scroll" id="heroCue"><span>Scroll</span><i></i></div>
   </header>
+  </div>
 
   <section class="metrics" aria-label="Logros principales">
-    <div class="metrics__grid reveal">
-      <div class="metric">
+    <div class="metrics__grid">
+      <div class="metric reveal" data-y="90">
         <div class="metric__value">EVRABO </div>
         <div class="metric__label">Founder &amp; Lead Product</div>
       </div>
-      <div class="metric">
+      <div class="metric reveal" data-y="90" data-d="0.12">
         <div class="metric__value">BONO <span>AI</span></div>
         <div class="metric__label">1er Lugar Ecohack</div>
       </div>
-      <div class="metric">
+      <div class="metric reveal" data-y="90" data-d="0.24">
         <div class="metric__value">SATI <span>TEC</span></div>
         <div class="metric__label">Presidente Estudiantil</div>
       </div>
-      <div class="metric">
+      <div class="metric reveal" data-y="90" data-d="0.36">
         <div class="metric__value">GLOBAL <span>UX</span></div>
         <div class="metric__label">Tec · Aalto · IE · CalArts</div>
       </div>
     </div>
   </section>
 
-  <section class="section section-alt" id="education">
+
+  <section class="section section-alt" id="education" data-curtain>
     <div class="container">
-      <div class="sec-head reveal">
+      <div class="sec-head reveal" data-y="20">
         <div class="sec-head__eyebrow">
           <span class="sec-head__num">01</span>
           <span class="sec-head__rule"></span>
@@ -598,8 +742,12 @@
         </div>
         <h2 class="sec-head__title">Educación &amp; Trayectoria</h2>
       </div>
+      <div class="edu-track" id="eduTrack">
+      <div class="edu-stage">
+      <div class="edu-rail"><span><b id="eduNow">01</b> / <span id="eduTotal">05</span></span><div class="edu-rail__bar"><i id="eduFill"></i></div><span>Educación</span></div>
+      <div class="edu-ghost" id="eduGhost">01</div>
       <div class="edu-list">
-        <div class="edu-item reveal">
+        <div class="edu-item">
           <img class="edu-logo" src="images/Estudios.png" alt="Tecnológico de Monterrey">
           <div class="edu-info">
             <span class="edu-badge">Santa Fe, México · Vigente</span>
@@ -611,7 +759,7 @@
             </div>
           </div>
         </div>
-        <div class="edu-item reveal">
+        <div class="edu-item">
           <img class="edu-logo" src="images/Aalto university.png" alt="Aalto University">
           <div class="edu-info">
             <span class="edu-badge">Helsinki, Finlandia · 07/2026</span>
@@ -624,7 +772,7 @@
             </div>
           </div>
         </div>
-        <div class="edu-item reveal">
+        <div class="edu-item">
           <img class="edu-logo" src="images/IE_University_logo.svg" alt="IE University">
           <div class="edu-info">
             <span class="edu-badge">Madrid, España · 07/2026</span>
@@ -637,7 +785,7 @@
             </div>
           </div>
         </div>
-        <div class="edu-item reveal">
+        <div class="edu-item">
           <img class="edu-logo" src="images/CalArts.png" alt="CalArts">
           <div class="edu-info">
             <span class="edu-badge">Online · 08/2026</span>
@@ -650,7 +798,7 @@
             </div>
           </div>
         </div>
-        <div class="edu-item reveal">
+        <div class="edu-item">
           <img class="edu-logo" src="images/Universidad de Colorado.webp" alt="University of Colorado">
           <div class="edu-info">
             <span class="edu-badge">Online · 10/2024</span>
@@ -664,12 +812,14 @@
           </div>
         </div>
       </div>
+      </div>
+      </div>
     </div>
   </section>
 
-  <section class="section" id="experience">
+  <section class="section" id="experience" data-curtain>
     <div class="container">
-      <div class="sec-head reveal">
+      <div class="sec-head reveal" data-y="20">
         <div class="sec-head__eyebrow">
           <span class="sec-head__num">02</span>
           <span class="sec-head__rule"></span>
@@ -677,8 +827,8 @@
         </div>
         <h2 class="sec-head__title">Experiencia Laboral</h2>
       </div>
-      <div class="card-grid">
-        <article class="card reveal">
+      <div class="card-grid xp-stack">
+        <article class="card xp-card" style="--k:0">
           <div class="card__visual card__visual--photo">
             <img src="images/EVRABO.jpg" alt="EVRABO">
             <span class="card__badge">06/2026 – Presente</span>
@@ -687,15 +837,15 @@
             <span class="card__seq">01 / FOUNDER</span>
             <h3 class="card__title">EVRABO</h3>
             <div class="card__meta">Founder &amp; Lead Product Developer</div>
-            <p class="card__desc">Fundación y desarrollo de plataformas digitales: Downhill Mexico Webpage y Conciliador Fiscal.</p>
+            <p class="card__desc">Estudio online que construye todo lo que una marca necesita para existir en línea: identidad, sitios web, tiendas y software. Proyectos: Downhill Mexico, AID Store, Protobike y Conciliador Fiscal.</p>
             <div class="card__footer">
               <span class="card__tag">Founder</span>
-              <span class="card__tag">Downhill MX</span>
-              <span class="card__tag card__tag--accent">Conciliador Fiscal</span>
+              <span class="card__tag">Web &amp; Shops</span>
+              <span class="card__tag card__tag--accent">Software</span>
             </div>
           </div>
         </article>
-        <article class="card reveal">
+        <article class="card xp-card" style="--k:1">
           <div class="card__visual card__visual--logo">
             <img src="images/experiencia Laborar.png" alt="Bono Internship UI AI">
             <span class="card__badge">06/2025 – 08/2025</span>
@@ -712,7 +862,7 @@
             </div>
           </div>
         </article>
-        <article class="card reveal">
+        <article class="card xp-card" style="--k:2">
           <div class="card__visual card__visual--logo">
             <img src="images/Estudios.png" alt="SATI Tec de Monterrey">
             <span class="card__badge">Actualmente</span>
@@ -732,9 +882,9 @@
     </div>
   </section>
 
-  <section class="section section-alt" id="hackathons">
+  <section class="section section-alt" id="hackathons" data-curtain>
     <div class="container">
-      <div class="sec-head reveal">
+      <div class="sec-head reveal" data-y="20">
         <div class="sec-head__eyebrow">
           <span class="sec-head__num">03</span>
           <span class="sec-head__rule"></span>
@@ -744,13 +894,13 @@
       </div>
       <div class="hack-grid">
         <div class="hack-card reveal">
-          <span class="hack-card__num">01</span>
+          <span class="hack-card__num" data-speed="-0.18">01</span>
           <span class="hack-card__badge">1er Lugar · Proyecto Ganador</span>
           <h3 class="hack-card__title">Ecohack Bono</h3>
           <p class="hack-card__text">Sistema inteligente con IA para estimación de huella de carbono corporativa.</p>
         </div>
         <div class="hack-card reveal">
-          <span class="hack-card__num">02</span>
+          <span class="hack-card__num" data-speed="-0.18">02</span>
           <span class="hack-card__badge">Equipo Finalista</span>
           <h3 class="hack-card__title">Start Hack Mexico</h3>
           <p class="hack-card__text">Startup tecnológica para predicción y prevención de sequías en México.</p>
@@ -759,9 +909,9 @@
     </div>
   </section>
 
-  <section class="section section--dark" id="projects">
+  <section class="section section--dark" id="projects" data-curtain>
     <div class="container">
-      <div class="sec-head reveal">
+      <div class="sec-head reveal" data-y="20">
         <div class="sec-head__eyebrow">
           <span class="sec-head__num">04</span>
           <span class="sec-head__rule"></span>
@@ -774,18 +924,43 @@
         <button class="filter-btn" onclick="filterProjects('founder')">Founder &amp; Startup</button>
         <button class="filter-btn" onclick="filterProjects('ai')">IA &amp; Hackatones</button>
       </div>
-      <div class="proj-grid">
-        <a class="proj-card reveal" data-cat="founder" href="https://paulovel.github.io/XECOR/" target="_blank" rel="noopener">
+      </div>
+      <div class="proj-track" id="projTrack">
+      <div class="proj-stage">
+      <div class="proj-ghost" id="projGhost" aria-hidden="true">Proyectos ✦ Proyectos</div>
+      <div class="proj-rail"><span><b id="projNow">01</b> / <span id="projTotal">04</span></span><div class="proj-rail__bar"><i id="projFill"></i></div><span>Proyectos →</span></div>
+      <div class="proj-grid" id="projGrid">
+        <a class="proj-card" data-cat="founder" href="https://evrabo.com/" target="_blank" rel="noopener">
           <img class="proj-card__img" src="images/EVRABO.jpg" alt="EVRABO">
           <div class="proj-card__body">
             <div>
               <h3 class="proj-card__title">EVRABO</h3>
-              <div class="proj-card__sub">Downhill Mexico · <span>Founder</span></div>
+              <div class="proj-card__sub">Online Studio · <span>Founder</span></div>
             </div>
             <span class="proj-card__arrow">↗</span>
           </div>
         </a>
-        <article class="proj-card reveal" data-cat="ai">
+        <a class="proj-card" data-cat="founder" href="https://protobike.vercel.app/login" target="_blank" rel="noopener">
+          <img class="proj-card__img" src="images/ProtoBike_white.png" alt="Protobike">
+          <div class="proj-card__body">
+            <div>
+              <h3 class="proj-card__title">Protobike</h3>
+              <div class="proj-card__sub">Gestión interna de tienda · <span>Software</span></div>
+            </div>
+            <span class="proj-card__arrow">↗</span>
+          </div>
+        </a>
+        <a class="proj-card" data-cat="founder" href="https://aid-branding.myshopify.com/" target="_blank" rel="noopener">
+          <img class="proj-card__img" src="images/aid_logazo.png" alt="AID Store">
+          <div class="proj-card__body">
+            <div>
+              <h3 class="proj-card__title">AID Store</h3>
+              <div class="proj-card__sub">Shopify · <span>E-commerce</span></div>
+            </div>
+            <span class="proj-card__arrow">↗</span>
+          </div>
+        </a>
+        <article class="proj-card" data-cat="ai">
           <img class="proj-card__img proj-card__img--contain" src="images/experiencia Laborar.png" alt="Ecohack Bono App">
           <div class="proj-card__body">
             <div>
@@ -795,7 +970,7 @@
             <span class="proj-card__arrow">↗</span>
           </div>
         </article>
-        <a class="proj-card reveal" data-cat="founder" href="https://leonardou-lab.github.io/WEB-DOWNHILL_03/index.html" target="_blank" rel="noopener">
+        <a class="proj-card" data-cat="founder" href="https://leonardou-lab.github.io/WEB-DOWNHILL_03/index.html" target="_blank" rel="noopener">
           <img class="proj-card__img" src="images/DOWNMX.jpg" alt="Downhill MX Web">
           <div class="proj-card__body">
             <div>
@@ -805,7 +980,7 @@
             <span class="proj-card__arrow">↗</span>
           </div>
         </a>
-        <article class="proj-card reveal" data-cat="ai">
+        <article class="proj-card" data-cat="ai">
           <img class="proj-card__img proj-card__img--contain" src="images/starthack.png" alt="Start Hack Startup">
           <div class="proj-card__body">
             <div>
@@ -816,12 +991,13 @@
           </div>
         </article>
       </div>
-    </div>
+      </div>
+      </div>
   </section>
 
   <section class="section section-alt section--dark" id="skills">
     <div class="container">
-      <div class="sec-head reveal">
+      <div class="sec-head reveal" data-y="20">
         <div class="sec-head__eyebrow">
           <span class="sec-head__num">05</span>
           <span class="sec-head__rule"></span>
@@ -869,13 +1045,13 @@
     </div>
   </section>
 
-  <section class="contact" id="contact">
+  <section class="contact" id="contact" data-curtain>
     <div class="container contact__inner">
-      <div class="reveal">
+      <div>
         <span class="contact__label">Contacto Directo</span>
-        <h2 class="contact__title">¿Hablamos de un <em>nuevo proyecto</em>?</h2>
+        <h2 class="contact__title" data-split>¿Hablamos de un <em>nuevo proyecto</em>?</h2>
       </div>
-      <div class="reveal">
+      <div class="reveal" data-y="60" data-x="80">
         <span class="contact__label">— Disponible ahora</span>
         <div class="contact__links">
           <a class="contact__btn contact__btn--email" href="mailto:paulo_velez@outlook.com">
@@ -911,6 +1087,7 @@
       document.querySelectorAll('.proj-card').forEach(card => {
         card.classList.toggle('hidden', category !== 'all' && card.getAttribute('data-cat') !== category);
       });
+      if (window.__measure) setTimeout(window.__measure, 30);
     }
 
     const navToggle = document.getElementById('navToggle');
@@ -918,10 +1095,331 @@
     navToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
     document.querySelectorAll('.nav__link').forEach(l => l.addEventListener('click', () => navMenu.classList.remove('active')));
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('in-view'); });
-    }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    /* ============ SCROLLTELLING ENGINE ============
+       Scroll position is smoothed (lerp) so everything trails the wheel = "heavy" feel.
+       Effects use the individual CSS props translate/scale/rotate so hover transforms keep working. */
+    (function () {
+      const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+      const fallback = () => {
+        document.documentElement.classList.remove('js-motion');
+        $$('.reveal').forEach(e => { e.removeAttribute('style'); e.classList.add('in-view'); });
+      };
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) { fallback(); return; }
+      document.documentElement.classList.add('js-motion');
+      try { init(); } catch (err) { console.error(err); fallback(); }
+
+      function init() {
+        const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+        const ease = t => 1 - Math.pow(1 - t, 3);
+        const docTop = el => { let y = 0; while (el) { y += el.offsetTop; el = el.offsetParent; } return y; };
+
+        /* ---- split text into masked words / chars ---- */
+        function splitText(el, mode) {
+          const words = []; let ci = 0;
+          el.setAttribute('aria-label', el.textContent.trim().replace(/\s+/g, ' '));
+          (function walk(node) {
+            [...node.childNodes].forEach(n => {
+              if (n.nodeType === 3) {
+                const frag = document.createDocumentFragment();
+                n.textContent.split(/(\s+)/).forEach(p => {
+                  if (!p) return;
+                  if (/^\s+$/.test(p)) { frag.appendChild(document.createTextNode(' ')); return; }
+                  const w = document.createElement('span'); w.className = 'w'; w.setAttribute('aria-hidden', 'true');
+                  if (mode === 'char') {
+                    [...p].forEach(c => {
+                      const s = document.createElement('span'); s.className = 'ch';
+                      s.style.setProperty('--i', ci++); s.textContent = c; w.appendChild(s); words.push(s);
+                    });
+                  } else {
+                    const s = document.createElement('span'); s.className = 'wi'; s.textContent = p; w.appendChild(s); words.push(s);
+                  }
+                  frag.appendChild(w);
+                });
+                n.replaceWith(frag);
+              } else if (n.nodeType === 1 && n.childNodes.length) walk(n);
+            });
+          })(el);
+          return words;
+        }
+
+        /* ---- collect elements ---- */
+        const progress = document.getElementById('progress');
+        const nav = document.querySelector('.nav');
+        const navMenu = document.getElementById('navMenu');
+        const heroTrack = document.getElementById('heroTrack');
+        const heroContent = document.getElementById('heroContent');
+        const heroVisual = document.getElementById('heroVisual');
+        const heroCue = document.getElementById('heroCue');
+        const heroChars = splitText(document.getElementById('heroTitle'), 'char');
+        const heads = [...$$('.sec-head__title'), ...$$('[data-split]')].map(el => ({ el, words: splitText(el, 'word') }));
+
+        const GRIDS = '.card-grid, .hack-grid, .proj-grid, .skills-grid';
+        const reveals = $$('.reveal').map(el => {
+          const p = el.parentElement;
+          const inGrid = p.matches(GRIDS);
+          const idx = inGrid ? [...p.children].indexOf(el) : 0;
+          return {
+            el, inGrid, idx,
+            dy: +(el.dataset.y ?? 70), dx: +(el.dataset.x ?? 0), d: +(el.dataset.d ?? 0), rot: 0, t: -1
+          };
+        });
+        $$('.skill-pill').forEach((el, i) => {
+          el.style.opacity = 0;
+          reveals.push({ el, inGrid: false, idx: 0, dy: 26, dx: 0, d: (i % 5) * 0.09, rot: 0, t: -1, small: true });
+        });
+
+        const pars = $$('[data-speed]').map(el => ({ el, speed: +el.dataset.speed }));
+
+        /* experience stacking deck */
+        const xpGrid = document.querySelector('.xp-stack');
+        const xp = $$('.xp-card').map((el, i) => ({
+          el, stick: 96 + i * 22, i,
+          img: el.querySelector('.card__visual img'),
+          kids: [...el.querySelector('.card__body').children]
+        }));
+        const curtains = $$('[data-curtain]').map(el => ({ el, r: -1 }));
+        const projGhost = document.getElementById('projGhost');
+
+        /* projects horizontal gallery */
+        const projTrack = document.getElementById('projTrack');
+        const projGrid = document.getElementById('projGrid');
+        const projNow = document.getElementById('projNow');
+        const projTotal = document.getElementById('projTotal');
+        const projFill = document.getElementById('projFill');
+        const projCards = $$('.proj-card').map(el => ({ el, img: el.querySelector('.proj-card__img:not(.proj-card__img--contain)') }));
+        let projTop = 0, projH = 0, projTravel = 0;
+
+        const eduTrack = document.getElementById('eduTrack');
+        const eduItems = $$('.edu-item').map(el => ({
+          el, logo: el.querySelector('.edu-logo'), info: el.querySelector('.edu-info'),
+          kids: [...el.querySelector('.edu-info').children]
+        }));
+        const N = eduItems.length;
+        eduTrack.style.height = `calc(100vh + ${(N - 1) * 90}vh)`;
+        const eduNow = document.getElementById('eduNow');
+        const eduFill = document.getElementById('eduFill');
+        const eduGhost = document.getElementById('eduGhost');
+        document.getElementById('eduTotal').textContent = String(N).padStart(2, '0');
+        let eduIdx = -1;
+
+        const navLinks = $$('.nav__link').map(a => ({ a, sec: document.querySelector(a.getAttribute('href')) }));
+
+        /* ---- measuring (layout positions ignore transforms) ---- */
+        let vh = innerHeight, vw = innerWidth, maxScroll = 0, pinned = true;
+        const pinQuery = matchMedia('(max-width:1024px), (max-height:700px)');
+        function measure() {
+          vh = innerHeight; vw = innerWidth;
+          maxScroll = Math.max(1, document.documentElement.scrollHeight - vh);
+          pinned = !pinQuery.matches;
+          reveals.forEach(o => {
+            o.top = docTop(o.el); o.h = o.el.offsetHeight;
+            const big = o.el.classList.contains('hack-card');
+            const sgn = o.idx % 2 ? 1 : -1;
+            o.x = o.dx ? o.dx : (o.inGrid && vw > 768 ? sgn * (big ? 300 : 110) : 0);
+            o.rot = o.inGrid && vw > 768 ? sgn * (big ? 7 : 2.5) : 0;
+            o.s0 = big ? 0.78 : 0.93;
+            if (o.small) o.t = -1;
+            o.t = -1;
+          });
+          heads.forEach(h => { h.top = docTop(h.el); h.h = h.el.offsetHeight; });
+          pars.forEach(o => { o.top = docTop(o.el); o.h = o.el.offsetHeight; });
+          let y = docTop(xpGrid);
+          xp.forEach(c => { c.h = c.el.offsetHeight; c.static = y; y += c.h + parseFloat(getComputedStyle(c.el).marginBottom || 0); });
+          curtains.forEach(c => { c.top = docTop(c.el); });
+          projTravel = Math.max(0, projGrid.offsetWidth - vw);
+          projTrack.style.height = (vh + projTravel * 1.15) + 'px';
+          projTop = docTop(projTrack); projH = projTrack.offsetHeight;
+          projCards.forEach(c => { c.w = c.el.offsetParent ? c.el.offsetWidth : 0; c.left = c.el.offsetLeft; });
+          heroTop = docTop(heroTrack); heroH = heroTrack.offsetHeight;
+          eduTop = docTop(eduTrack); eduH = eduTrack.offsetHeight;
+          navLinks.forEach(l => { l.top = l.sec ? docTop(l.sec) : 0; });
+          kick();
+        }
+        let heroTop = 0, heroH = 0, eduTop = 0, eduH = 0;
+
+        /* ---- render ---- */
+        function revealProgress(top, h, startFrac, span) {
+          let raw = (vh * startFrac - (top - cur)) / (vh * span);
+          const reach = (vh * startFrac - (top - maxScroll)) / (vh * span);
+          if (reach < 1) raw /= Math.max(reach, 0.35);
+          return raw;
+        }
+
+        function render(vel) {
+          progress.style.transform = `scaleX(${clamp(cur / maxScroll)})`;
+
+          /* hero */
+          const hp = pinned ? clamp((cur - heroTop) / Math.max(1, heroH - vh)) : clamp(cur / (vh * 0.9));
+          const fade = 1 - clamp((hp - 0.35) / 0.55);
+          heroContent.style.translate = `0 ${-hp * 160}px`;
+          heroContent.style.scale = 1 - hp * 0.2;
+          heroContent.style.opacity = fade;
+          heroVisual.style.translate = `0 ${-hp * 110}px`;
+          heroVisual.style.scale = 1 + hp * 0.25;
+          heroVisual.style.rotate = `${hp * -4}deg`;
+          heroVisual.style.opacity = 1 - clamp((hp - 0.5) / 0.5);
+          heroCue.style.opacity = 1 - clamp(hp * 6);
+          heroChars.forEach((c, i) => {
+            c.style.translate = `0 ${-hp * (60 + ((i * 37) % 7) * 34)}px`;
+          });
+
+          /* experience: cards stack and the older ones sink back */
+          xp.forEach((c, i) => {
+            const enter = ease(clamp((vh - (c.static - cur)) / (vh * 0.45)));
+            const next = xp[i + 1];
+            let cv = 0;
+            if (next) cv = clamp(1 - (next.static - cur - next.stick) / (c.h * 0.9));
+            // card flips up from the floor, then tips back as the next one covers it
+            c.el.style.transform = `perspective(1400px) rotateX(${(1 - enter) * -18 + cv * 9}deg)`;
+            c.el.style.translate = `0 ${(1 - enter) * 160 - cv * 26}px`;
+            c.el.style.scale = (0.9 + 0.1 * enter) * (1 - cv * 0.08);
+            c.el.style.opacity = enter;
+            c.el.style.filter = cv > 0.02 ? `brightness(${1 - cv * 0.14})` : 'none';
+            // inner layers move at different speeds
+            if (c.img) { c.img.style.scale = 1.4 - 0.4 * enter; c.img.style.translate = `${(1 - enter) * -60}px 0`; }
+            c.kids.forEach((k, j) => {
+              const t = ease(clamp(enter * 1.5 - j * 0.2));
+              k.style.opacity = t;
+              k.style.translate = `${(1 - t) * 70}px ${(1 - t) * 24}px`;
+            });
+          });
+
+          /* section curtains: each section rolls in with rounded corners that square off */
+          curtains.forEach(c => {
+            const t = ease(clamp((vh - (c.top - cur)) / (vh * 0.6)));
+            const r = Math.round((1 - t) * Math.min(vw * 0.1, 150));
+            if (r === c.r) return;
+            c.r = r;
+            c.el.style.clipPath = r > 0 ? `inset(0 round ${r}px ${r}px 0 0)` : 'none';
+          });
+
+          /* projects: pinned horizontal travel with depth */
+          const pp = clamp((cur - projTop) / Math.max(1, projH - vh));
+          const gx = -pp * projTravel;
+          projGrid.style.translate = `${gx}px 0`;
+          projGrid.style.transform = `skewX(${clamp(vel * 0.03, -5, 5)}deg)`;
+          projGhost.style.translate = `${gx * 0.4}px -50%`;
+          let best = 0, bd = 1e9, shown = 0;
+          projCards.forEach(c => {
+            if (!c.w) return;
+            shown++;
+            const center = c.left + c.w / 2 + gx;
+            const d = (center - vw / 2) / (vw * 0.55), ad = clamp(Math.abs(d));
+            // cover-flow: side cards angle toward the center and recede
+            c.el.style.transform = `perspective(1300px) rotateY(${clamp(-d, -1.2, 1.2) * 20}deg)`;
+            c.el.style.scale = 1 - ad * 0.16;
+            c.el.style.opacity = 1 - ad * 0.6;
+            c.el.style.translate = `0 ${ad * 28}px`;
+            if (c.img) { c.img.style.scale = 1.22; c.img.style.translate = `${-d * 60}px 0`; }
+            if (Math.abs(center - vw / 2) < bd) { bd = Math.abs(center - vw / 2); best = shown; }
+          });
+          projNow.textContent = String(best || 1).padStart(2, '0');
+          projTotal.textContent = String(shown || 1).padStart(2, '0');
+          projFill.style.transform = `scaleX(${pp})`;
+
+          /* education pinned story */
+          const ep = clamp((cur - eduTop) / Math.max(1, eduH - vh));
+          const pos = ep * (N - 1);
+          eduItems.forEach((it, i) => {
+            const d = pos - i, ad = Math.min(Math.abs(d), 1);
+            const o = clamp(1 - (Math.abs(d) - 0.3) / 0.4);
+            const s = it.el.style;
+            s.opacity = o; s.visibility = o <= 0 ? 'hidden' : 'visible';
+            s.translate = `0 ${-d * 170}px`;
+            s.scale = 1 - ad * 0.12;
+            s.filter = ad > 0.04 ? `blur(${ad * 12}px)` : 'none';
+            it.logo.style.translate = `${-d * 190}px 0`;
+            it.logo.style.rotate = `${-d * 28}deg`;
+            it.logo.style.scale = 1 - ad * 0.4;
+            // each line of text trails the previous one: a wave through the block
+            it.kids.forEach((k, j) => {
+              k.style.translate = `${d * (90 + j * 70)}px 0`;
+              k.style.opacity = clamp(1 - (Math.abs(d) * (1 + j * 0.45) - 0.12) / 0.4);
+            });
+          });
+          const idx = Math.round(pos);
+          if (idx !== eduIdx) {
+            eduIdx = idx;
+            const t = String(idx + 1).padStart(2, '0');
+            eduNow.textContent = t; eduGhost.textContent = t;
+          }
+          eduFill.style.transform = `scaleX(${ep})`;
+          eduGhost.style.translate = `0 ${-ep * 140}px`;
+
+          /* scrubbed reveals */
+          reveals.forEach(o => {
+            if (!o.h) return;
+            const raw = revealProgress(o.top, o.h, o.small ? 1.0 : 1.0, o.small ? 0.35 : 0.5);
+            const t = ease(clamp(raw - o.d));
+            if (Math.abs(t - o.t) < 0.0005) return;
+            o.t = t;
+            const s = o.el.style, k = 1 - t;
+            s.opacity = t;
+            s.translate = `${k * o.x}px ${k * o.dy}px`;
+            s.scale = o.small ? 0.8 + 0.2 * t : o.s0 + (1 - o.s0) * t;
+            s.rotate = o.rot ? `${k * o.rot}deg` : '0deg';
+          });
+
+          /* word-mask headings */
+          heads.forEach(h => {
+            const raw = revealProgress(h.top, h.h, 0.95, 0.4);
+            h.words.forEach((w, i) => {
+              const t = ease(clamp(raw * 1.6 - i * 0.17));
+              if (t === w._t) return;
+              w._t = t;
+              w.style.translate = `0 ${(1 - t) * 112}%`;
+              w.style.rotate = `${(1 - t) * 7}deg`;
+            });
+          });
+
+          /* parallax */
+          pars.forEach(o => {
+            if (!o.h) return;
+            const c = (o.top + o.h / 2) - cur - vh / 2;
+            if (Math.abs(c) > vh * 1.5) return;
+            o.el.style.translate = `0 ${c * o.speed}px`;
+          });
+
+          /* nav active link */
+          let active = null;
+          navLinks.forEach(l => { if (l.sec && l.top - vh * 0.45 <= target) active = l; });
+          navLinks.forEach(l => l.a.classList.toggle('active', l === active));
+        }
+
+        /* ---- loop (runs only while something is moving) ---- */
+        let target = scrollY, cur = target, running = false, last = 0;
+        function frame(now) {
+          const dt = Math.min(64, now - last); last = now;
+          target = scrollY;
+          cur += (target - cur) * (1 - Math.pow(1 - 0.075, dt / 16.667));
+          const vel = target - cur;
+          if (Math.abs(vel) < 0.2) cur = target;
+          render(cur === target ? 0 : vel);
+          if (cur !== target) requestAnimationFrame(frame); else running = false;
+        }
+        function kick() { if (!running) { running = true; last = performance.now(); requestAnimationFrame(frame); } }
+
+        /* nav hide on scroll down, show on scroll up */
+        let lastY = scrollY;
+        addEventListener('scroll', () => {
+          const y = scrollY;
+          if (!navMenu.classList.contains('active')) {
+            if (y > lastY + 4 && y > 240) nav.classList.add('nav--hidden');
+            else if (y < lastY - 4 || y < 240) nav.classList.remove('nav--hidden');
+          }
+          lastY = y;
+          kick();
+        }, { passive: true });
+        addEventListener('resize', measure);
+        addEventListener('load', measure);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+        if ('ResizeObserver' in window) new ResizeObserver(measure).observe(document.body);
+        window.__measure = measure;
+
+        measure();
+        render(0);
+      }
+    })();
   </script>
 </body>
 </html>
